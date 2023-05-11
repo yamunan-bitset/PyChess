@@ -53,4 +53,3 @@ class Piece:
     def draw(self):
         if not self.captured:
             self.screen.blit(self.image, self.coord)
-        else: pass

@@ -13,6 +13,8 @@ InitPieces(screen, p)
 running = True
 drag = 0
 white_turn = True
+select_pos1 = -1
+select_pos2 = -1
 while running:
     mouse = pygame.Vector2(pygame.mouse.get_pos())
     event = pygame.event.wait()
@@ -24,6 +26,7 @@ while running:
             for i in range(16, 32) if white_turn else range(16):
                 if p[i].pos == pos:
                     drag = i
+                    select_pos1 = pos
                     break
     if event.type == pygame.MOUSEBUTTONUP:
         if drag > 0:
@@ -35,6 +38,8 @@ while running:
                         break
             p[drag].pos = pieces.get_pos_from_coord(mouse)
             p[drag].coord = pieces.get_coord_from_pos(p[drag].pos)
+            select_pos2 = pieces.get_pos_from_coord(mouse)
+            pygame.draw.rect(screen, (220, 190, 0), (pieces.get_coord_from_pos(pos)[0], pieces.get_coord_from_pos(pos)[1], 100, 100))
             drag = 0
             white_turn = not white_turn
     if drag > 0:
@@ -42,6 +47,11 @@ while running:
 
     screen.fill((0, 0, 0))
     Board(screen)
+    if select_pos1 > 0:
+        pygame.draw.rect(screen, (220, 190, 0), (pieces.get_coord_from_pos(select_pos1)[0], pieces.get_coord_from_pos(select_pos1)[1], 100, 100))
+    if select_pos2 > 0:
+        pygame.draw.rect(screen, (220, 190, 0), (pieces.get_coord_from_pos(select_pos2)[0], pieces.get_coord_from_pos(select_pos2)[1], 100, 100))
+
     for i in range(32):
         p[i].draw()
     pygame.display.update()

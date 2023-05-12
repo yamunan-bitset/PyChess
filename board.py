@@ -1,9 +1,13 @@
 import pygame
 import pieces
+import legal
 
 BOARD_POS = (50, 50)
 size = 100
 length = 8
+
+board = [None] * 64
+analysis = legal.Legal(board)
 
 def Board(screen):
     cnt = 0
@@ -34,4 +38,5 @@ def InitPieces(screen, p):
             piece = "bishop"
         elif (i == 4 or i == 19):
             piece = "king"
+        board[i if col == 'b' else (80 - i) - 1] = col + "_" + piece
         p.append(pieces.Piece(screen, f"{col}_{piece}", i + 1 if 0 <= i < 16 else 80 - i))

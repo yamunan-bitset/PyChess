@@ -13,18 +13,18 @@ class Legal:
 
     def legal(self, pos):
         moves = []
-        if self.board[pos] == None:
+        if self.board[pos[0]][pos[1]] == None:
             return moves
-
-        if self.board[pos][2:] == "pawn":
-            moves.append(pos + 7 if not self.white_turn else pos - 7)
-            if not self.white_turn:
-                if 9 <= pos <= 16:
-                    moves.append(pos + 15)
+        print(self.board[pos[0]][pos[1]].type)
+        if self.board[pos[0]][pos[1]].type[2:] == "pawn":
+            moves.append((pos[0], pos[1] + 1 if not self.white_turn else pos[1] - 1))
+            if self.white_turn:
+                if pos[1] == 6:
+                    moves.append((pos[0], pos[1] - 2))
             else:
-                if 49 <= pos <= 56:
-                    moves.append(pos - 15)
-        if self.board[pos][2:] == "rook":
+                if pos[1] == 1:
+                    moves.append((pos[0], pos[1] + 2))
+        if self.board[pos[0]][pos[1]].type[2:] == "rook":
             print("ROOOKIE REACHED")
 
         return moves

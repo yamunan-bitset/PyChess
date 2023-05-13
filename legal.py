@@ -1,8 +1,7 @@
 class Legal:
-    def __init__(self, board, p):
+    def __init__(self, board):
         self.board = board
         self.white_turn = True
-        self.p = p
 
     def print_board(self):
         print()

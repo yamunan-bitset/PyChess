@@ -57,6 +57,7 @@ def InitPieces(screen, fen):
     check_castle = False
     for i in fen:
         for j in i:
+            print(j, xiter)
             if check_turn:
                 print("Turn", j)
                 turn = j
@@ -73,10 +74,15 @@ def InitPieces(screen, fen):
                     check_castle = True
                 break
             elif j == '/':
+                print("reached slash")
                 yiter += 1
+                if xiter == 8:
+                    xiter = 0
             elif j.isdigit():
-                print(j)
+                print("reached is digit:", j)
+                print("xiter before", xiter)
                 xiter += int(j) % 8
+                print("xiter:",xiter)
             else:
                 if j == 'r':
                     t = "b_rook"
@@ -102,7 +108,7 @@ def InitPieces(screen, fen):
                     t = "b_queen"
                 elif j == 'Q':
                     t = "w_queen"
-                print(xiter, yiter)
+                print("x, y:", xiter, yiter)
                 board[xiter][yiter] = pieces.Piece(screen, t, (xiter, yiter))
                 xiter += 1
                 if xiter == 8:

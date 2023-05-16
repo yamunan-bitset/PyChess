@@ -43,33 +43,68 @@ def Board(screen):
         cnt -= 1
     pygame.draw.rect(screen, (120, 0, 0), [25, 25, length * size + BOARD_POS[0], length * size + BOARD_POS[0]], 20)
 
-def InitPieces(screen):
+def InitPieces(screen, fen):
     board = []
     for y in range(8):
         board.append([])
         for x in range(8):
             board[y].append(None)
-
-    board[0][0] = pieces.Piece(screen, "b_rook", (0, 0))
-    board[7][0] = pieces.Piece(screen, "b_rook", (7, 0))
-    board[1][0] = pieces.Piece(screen, "b_knight", (1, 0))
-    board[6][0] = pieces.Piece(screen, "b_knight", (6, 0))
-    board[2][0] = pieces.Piece(screen, "b_bishop", (2, 0))
-    board[5][0] = pieces.Piece(screen, "b_bishop", (5, 0))
-    board[4][0] = pieces.Piece(screen, "b_king", (4, 0))
-    board[3][0] = pieces.Piece(screen, "b_queen", (3, 0))
-
-    board[0][7] = pieces.Piece(screen, "w_rook", (0, 7))
-    board[7][7] = pieces.Piece(screen, "w_rook", (7, 7))
-    board[1][7] = pieces.Piece(screen, "w_knight", (1, 7))
-    board[6][7] = pieces.Piece(screen, "w_knight", (6, 7))
-    board[2][7] = pieces.Piece(screen, "w_bishop", (2, 7))
-    board[5][7] = pieces.Piece(screen, "w_bishop", (5, 7))
-    board[4][7] = pieces.Piece(screen, "w_king", (4, 7))
-    board[3][7] = pieces.Piece(screen, "w_queen", (3, 7))
-
-    for x in range(0, 8):
-        board[x][1] = pieces.Piece(screen, "b_pawn", (x, 1))
-        board[x][6] = pieces.Piece(screen, "w_pawn", (x, 6))
-
-    return board
+    t = ""
+    turn = ''
+    xiter = 0
+    yiter = 0
+    check_turn = False
+    check_castle = False
+    for i in fen:
+        for j in i:
+            if check_turn:
+                print("Turn", j)
+                turn = j
+                check_turn = False
+                break
+            if check_castle: # TODO
+                #check_castle = False
+                break
+            elif j == ' ':
+                if turn == '':
+                    if not check_turn:
+                        check_turn = True
+                else:
+                    check_castle = True
+                break
+            elif j == '/':
+                yiter += 1
+            elif j.isdigit():
+                print(j)
+                xiter += int(j) % 8
+            else:
+                if j == 'r':
+                    t = "b_rook"
+                elif j == 'R':
+                    t = "w_rook"
+                elif j == 'k':
+                    t = "b_king"
+                elif j == 'K':
+                    t = "w_king"
+                elif j == 'p':
+                    t = "b_pawn"
+                elif j == 'P':
+                    t = "w_pawn"
+                elif j == 'n':
+                    t = "b_knight"
+                elif j == 'N':
+                    t = "w_knight"
+                elif j == 'b':
+                    t = "b_bishop"
+                elif j == 'B':
+                    t = "w_bishop"
+                elif j == 'q':
+                    t = "b_queen"
+                elif j == 'Q':
+                    t = "w_queen"
+                print(xiter, yiter)
+                board[xiter][yiter] = pieces.Piece(screen, t, (xiter, yiter))
+                xiter += 1
+                if xiter == 8:
+                    xiter = 0
+    return board, turn

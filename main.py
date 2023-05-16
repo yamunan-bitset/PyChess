@@ -7,8 +7,9 @@ pygame.init()
 screen = pygame.display.set_mode((w, h))
 pygame.display.set_caption("Chess")
 
-board = InitPieces(screen)
-analysis = legal.Legal(board)
+start_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+board, turn = InitPieces(screen, start_fen)
+analysis = legal.Legal(board, turn)
 
 running = True
 drag = (-1, -1)

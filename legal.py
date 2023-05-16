@@ -1,7 +1,10 @@
 class Legal:
-    def __init__(self, board):
+    def __init__(self, board, turn):
         self.board = board
-        self.white_turn = True
+        print(turn)
+        if turn == 'w': self.white_turn = True
+        elif turn == 'b': self.white_turn = False
+
 
     def print_board(self):
         print()

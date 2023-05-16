@@ -26,7 +26,7 @@ while running:
             pos = get_pos_from_coord(mouse)
             for i in range(8):
                 for j in range(8):
-                    if analysis.board[i][j] != None:
+                    if analysis.board[i][j].type != "":
                         if analysis.board[i][j].type[:1] == ('w' if analysis.white_turn else 'b'):
                             if analysis.board[i][j].pos == pos:
                                 drag = (i, j)
@@ -41,7 +41,7 @@ while running:
                 found = False
                 if pos == get_pos_from_coord(mouse):
                     p = analysis.board[select_pos1[0]][select_pos1[1]]
-                    analysis.board[select_pos1[0]][select_pos1[1]] = None
+                    analysis.board[select_pos1[0]][select_pos1[1]] = pieces.Piece(screen, "", select_pos1)
                     select_pos2 = get_pos_from_coord(mouse)
                     p.pos = select_pos2
                     p.coord = get_coord_from_pos(select_pos2)

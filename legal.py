@@ -24,9 +24,27 @@ class Legal:
             if self.white_turn:
                 if pos[1] == 6:
                     moves.append((pos[0], pos[1] - 2))
-            else:
+                try:
+                    if self.board[pos[0] + 1][pos[1] - 1].type[:1] == 'b':
+                        moves.append((pos[0] + 1, pos[1] - 1))
+                except IndexError: pass
+                try:
+                    if self.board[pos[0] - 1][pos[1] - 1].type[:1] == 'b':
+                        moves.append((pos[0] - 1, pos[1] - 1))
+                except IndexError: pass
+
+            elif not self.white_turn:
                 if pos[1] == 1:
                     moves.append((pos[0], pos[1] + 2))
+                try:
+                    if self.board[pos[0] + 1][pos[1] + 1].type[:1] == 'w':
+                        moves.append((pos[0] + 1, pos[1] + 1))
+                except IndexError: pass
+                try:
+                    if self.board[pos[0] - 1][pos[1] + 1].type[:1] == 'w':
+                        moves.append((pos[0] - 1, pos[1] + 1))
+                except IndexError: pass
+
         if self.board[pos[0]][pos[1]].type[2:] == "rook":
             print("ROOOKIE REACHED")
 

@@ -48,7 +48,7 @@ def InitPieces(screen, fen):
     for y in range(8):
         board.append([])
         for x in range(8):
-            board[y].append(None)
+            board[y].append(pieces.Piece(screen, "", (y, x)))
     t = ""
     turn = ''
     xiter = 0

@@ -11,13 +11,15 @@ class Piece:
         self.captured = False
 
     def get_image_from_type(self):
-        img = pygame.image.load(f"data/assets/{self.type}.png")
-        return img
+        if self.type != "":
+            img = pygame.image.load(f"data/assets/{self.type}.png")
+            return img
 
     def draw(self):
-        if self.type[2:] == "pawn":
-            if self.pos[1] == 7 or self.pos[1] == 0:
-                self.type = self.type[:2] + "queen"
-                self.image = self.get_image_from_type()
-        if not self.captured:
-            self.screen.blit(self.image, self.coord)
+        if self.type != "" and self.type != None:
+            if self.type[2:] == "pawn":
+                if self.pos[1] == 7 or self.pos[1] == 0:
+                    self.type = self.type[:2] + "queen"
+                    self.image = self.get_image_from_type()
+            if not self.captured:
+                self.screen.blit(self.image, self.coord)

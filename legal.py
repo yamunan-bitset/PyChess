@@ -230,4 +230,44 @@ class Legal:
 
     def king_moves(self, pos):
         moves = []
+        m = (pos[0] + 1, pos[1])
+        if not (m[0] > 7 or m[1] > 7 or m[0] < 0 or m[1] < 0):
+            if not ((self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
+                    not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b')):
+                moves.append(m)
+        m = (pos[0] - 1, pos[1])
+        if not (m[0] > 7 or m[1] > 7 or m[0] < 0 or m[1] < 0):
+            if not ((self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
+                    not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b')):
+                moves.append(m)
+        m = (pos[0], pos[1] + 1)
+        if not (m[0] > 7 or m[1] > 7 or m[0] < 0 or m[1] < 0):
+            if not ((self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
+                    not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b')):
+                moves.append(m)
+        m = (pos[0], pos[1] - 1)
+        if not (m[0] > 7 or m[1] > 7 or m[0] < 0 or m[1] < 0):
+            if not ((self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
+                    not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b')):
+                moves.append(m)
+        m = (pos[0] + 1, pos[1] - 1)
+        if not (m[0] > 7 or m[1] > 7 or m[0] < 0 or m[1] < 0):
+            if not ((self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
+                    not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b')):
+                moves.append(m)
+        m = (pos[0] + 1, pos[1] + 1)
+        if not (m[0] > 7 or m[1] > 7 or m[0] < 0 or m[1] < 0):
+            if not ((self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
+                    not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b')):
+                moves.append(m)
+        m = (pos[0] - 1, pos[1] + 1)
+        if not (m[0] > 7 or m[1] > 7 or m[0] < 0 or m[1] < 0):
+            if not ((self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
+                    not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b')):
+                moves.append(m)
+        m = (pos[0] - 1, pos[1] - 1)
+        if not (m[0] > 7 or m[1] > 7 or m[0] < 0 or m[1] < 0):
+            if not ((self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
+                    not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b')):
+                moves.append(m)
         return moves

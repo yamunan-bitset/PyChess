@@ -7,7 +7,7 @@ pygame.init()
 screen = pygame.display.set_mode((w, h))
 pygame.display.set_caption("Chess")
 
-start_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+start_fen = "8/p3k3/1p1p2p1/4n2p/8/1KP2BPP/5P2/8 w - - 0 1"
 board, turn = InitPieces(screen, start_fen)
 analysis = legal.Legal(board, turn)
 
@@ -77,7 +77,7 @@ while running:
             screen.blit(s, get_coord_from_pos(move))
         board[drag[0]][drag[1]].coord = mouse - (50, 50)
         if get_pos_from_coord(mouse)[0] != -1 and get_pos_from_coord(mouse)[1] != -1:
-            pygame.draw.rect(screen, (255, 0, 0, 50), (get_coord_from_pos(get_pos_from_coord(mouse))[0], get_coord_from_pos(get_pos_from_coord(mouse))[1], 100, 100), 2)
+            pygame.draw.rect(screen, (255, 255, 255, 50), (get_coord_from_pos(get_pos_from_coord(mouse))[0], get_coord_from_pos(get_pos_from_coord(mouse))[1], 100, 100), 5)
 
     for i in range(8):
         for j in range(8):

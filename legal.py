@@ -60,6 +60,7 @@ class Legal:
                         if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
                             moves.append(m)
                             break
+                        else: break
             for i in range(1, 8):
                 m = (pos[0], pos[1] + i)
                 if board.get_coord_from_pos(m) != (-1, -1):
@@ -69,6 +70,7 @@ class Legal:
                         if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
                             moves.append(m)
                             break
+                        else: break
             for i in range(1, 8):
                 m = (pos[0] - i, pos[1])
                 if board.get_coord_from_pos(m) != (-1, -1):
@@ -78,6 +80,7 @@ class Legal:
                         if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
                             moves.append(m)
                             break
+                        else: break
             for i in range(1, 8):
                 m = (pos[0], pos[1] - i)
                 if board.get_coord_from_pos(m) != (-1, -1):
@@ -87,5 +90,6 @@ class Legal:
                         if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
                             moves.append(m)
                             break
+                        else: break
 
         return moves

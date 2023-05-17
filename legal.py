@@ -21,75 +21,123 @@ class Legal:
         if self.board[pos[0]][pos[1]] == None:
             return moves
 
-        # Pawn
         if self.board[pos[0]][pos[1]].type[2:] == "pawn":
-            if self.board[pos[0]][pos[1] + 1 if not self.white_turn else pos[1] - 1].type[:1] == "":
-                moves.append((pos[0], pos[1] + 1 if not self.white_turn else pos[1] - 1))
-            if self.white_turn:
-                if pos[1] == 6:
-                    moves.append((pos[0], pos[1] - 2))
-                try:
-                    if self.board[pos[0] + 1][pos[1] - 1].type[:1] == 'b':
-                        moves.append((pos[0] + 1, pos[1] - 1))
-                except IndexError: pass
-                try:
-                    if self.board[pos[0] - 1][pos[1] - 1].type[:1] == 'b':
-                        moves.append((pos[0] - 1, pos[1] - 1))
-                except IndexError: pass
+            moves = self.pawn_moves(pos)
 
-            elif not self.white_turn:
-                if pos[1] == 1:
-                    moves.append((pos[0], pos[1] + 2))
-                try:
-                    if self.board[pos[0] + 1][pos[1] + 1].type[:1] == 'w':
-                        moves.append((pos[0] + 1, pos[1] + 1))
-                except IndexError: pass
-                try:
-                    if self.board[pos[0] - 1][pos[1] + 1].type[:1] == 'w':
-                        moves.append((pos[0] - 1, pos[1] + 1))
-                except IndexError: pass
-
-        # Rook
         if self.board[pos[0]][pos[1]].type[2:] == "rook":
-            for i in range(1, 8):
-                m = (pos[0] + i, pos[1])
-                if board.get_coord_from_pos(m) != (-1, -1):
-                    if self.board[m[0]][m[1]].type == "":
-                        moves.append(m)
-                    else:
-                        if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
-                            moves.append(m)
-                            break
-                        else: break
-            for i in range(1, 8):
-                m = (pos[0], pos[1] + i)
-                if board.get_coord_from_pos(m) != (-1, -1):
-                    if self.board[m[0]][m[1]].type == "":
-                        moves.append(m)
-                    else:
-                        if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
-                            moves.append(m)
-                            break
-                        else: break
-            for i in range(1, 8):
-                m = (pos[0] - i, pos[1])
-                if board.get_coord_from_pos(m) != (-1, -1):
-                    if self.board[m[0]][m[1]].type == "":
-                        moves.append(m)
-                    else:
-                        if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
-                            moves.append(m)
-                            break
-                        else: break
-            for i in range(1, 8):
-                m = (pos[0], pos[1] - i)
-                if board.get_coord_from_pos(m) != (-1, -1):
-                    if self.board[m[0]][m[1]].type == "":
-                        moves.append(m)
-                    else:
-                        if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
-                            moves.append(m)
-                            break
-                        else: break
+            moves = self.linear_sliding(pos)
 
+        if self.board[pos[0]][pos[1]].type[2:] == "bishop":
+            moves = self.diagonal_sliding(pos)
+
+        if self.board[pos[0]][pos[1]].type[2:] == "queen":
+            for move in self.linear_sliding(pos):
+                moves.append(move)
+            for move in self.diagonal_sliding(pos):
+                moves.append(move)
+
+        if self.board[pos[0]][pos[1]].type[2:] == "knight":
+            moves = self.knight_moves(pos)
+
+        if self.board[pos[0]][pos[1]].type[2:] == "king":
+            moves = self.king_moves(pos)
+
+        return moves
+
+
+    def pawn_moves(self, pos):
+        moves = []
+        if self.board[pos[0]][pos[1] + 1 if not self.white_turn else pos[1] - 1].type[:1] == "":
+            moves.append((pos[0], pos[1] + 1 if not self.white_turn else pos[1] - 1))
+        if self.white_turn:
+            if pos[1] == 6:
+                moves.append((pos[0], pos[1] - 2))
+            try:
+                if self.board[pos[0] + 1][pos[1] - 1].type[:1] == 'b':
+                    moves.append((pos[0] + 1, pos[1] - 1))
+            except IndexError:
+                pass
+            try:
+                if self.board[pos[0] - 1][pos[1] - 1].type[:1] == 'b':
+                    moves.append((pos[0] - 1, pos[1] - 1))
+            except IndexError:
+                pass
+
+        elif not self.white_turn:
+            if pos[1] == 1:
+                moves.append((pos[0], pos[1] + 2))
+            try:
+                if self.board[pos[0] + 1][pos[1] + 1].type[:1] == 'w':
+                    moves.append((pos[0] + 1, pos[1] + 1))
+            except IndexError:
+                pass
+            try:
+                if self.board[pos[0] - 1][pos[1] + 1].type[:1] == 'w':
+                    moves.append((pos[0] - 1, pos[1] + 1))
+            except IndexError:
+                pass
+        return moves
+
+    def linear_sliding(self, pos):
+        moves = []
+        for i in range(1, 8):
+            m = (pos[0] + i, pos[1])
+            if board.get_coord_from_pos(m) != (-1, -1):
+                if self.board[m[0]][m[1]].type == "":
+                    moves.append(m)
+                else:
+                    if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
+                            self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
+                        moves.append(m)
+                        break
+                    else:
+                        break
+        for i in range(1, 8):
+            m = (pos[0], pos[1] + i)
+            if board.get_coord_from_pos(m) != (-1, -1):
+                if self.board[m[0]][m[1]].type == "":
+                    moves.append(m)
+                else:
+                    if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
+                            self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
+                        moves.append(m)
+                        break
+                    else:
+                        break
+        for i in range(1, 8):
+            m = (pos[0] - i, pos[1])
+            if board.get_coord_from_pos(m) != (-1, -1):
+                if self.board[m[0]][m[1]].type == "":
+                    moves.append(m)
+                else:
+                    if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
+                            self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
+                        moves.append(m)
+                        break
+                    else:
+                        break
+        for i in range(1, 8):
+            m = (pos[0], pos[1] - i)
+            if board.get_coord_from_pos(m) != (-1, -1):
+                if self.board[m[0]][m[1]].type == "":
+                    moves.append(m)
+                else:
+                    if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
+                            self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
+                        moves.append(m)
+                        break
+                    else:
+                        break
+        return moves
+
+    def diagonal_sliding(self, pos):
+        moves = []
+        return moves
+
+    def knight_moves(self, pos):
+        moves = []
+        return moves
+
+    def king_moves(self, pos):
+        moves = []
         return moves

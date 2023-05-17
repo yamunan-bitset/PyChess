@@ -26,7 +26,10 @@ def get_pos_from_coord(coord):
     return (x, y)
 
 def get_coord_from_pos(pos):
-    return (50 + pos[0] * 100, 50 + pos[1] * 100)
+    m = (50 + pos[0] * 100, 50 + pos[1] * 100)
+    if m[0] > 750 or m[1] > 750 or m[0] < 50 or m[1] < 50:
+        return (-1, -1)
+    return m
 
 BOARD_POS = (50, 50)
 size = 100

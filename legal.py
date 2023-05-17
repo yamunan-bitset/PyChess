@@ -1,3 +1,5 @@
+import board
+
 class Legal:
     def __init__(self, board, turn):
         self.board = board
@@ -18,7 +20,8 @@ class Legal:
         moves = []
         if self.board[pos[0]][pos[1]] == None:
             return moves
-        #print(self.board[pos[0]][pos[1]].type)
+
+        # Pawn
         if self.board[pos[0]][pos[1]].type[2:] == "pawn":
             if self.board[pos[0]][pos[1] + 1 if not self.white_turn else pos[1] - 1].type[:1] == "":
                 moves.append((pos[0], pos[1] + 1 if not self.white_turn else pos[1] - 1))
@@ -46,7 +49,43 @@ class Legal:
                         moves.append((pos[0] - 1, pos[1] + 1))
                 except IndexError: pass
 
+        # Rook
         if self.board[pos[0]][pos[1]].type[2:] == "rook":
-            print("ROOOKIE REACHED")
+            for i in range(1, 8):
+                m = (pos[0] + i, pos[1])
+                if board.get_coord_from_pos(m) != (-1, -1):
+                    if self.board[m[0]][m[1]].type == "":
+                        moves.append(m)
+                    else:
+                        if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
+                            moves.append(m)
+                            break
+            for i in range(1, 8):
+                m = (pos[0], pos[1] + i)
+                if board.get_coord_from_pos(m) != (-1, -1):
+                    if self.board[m[0]][m[1]].type == "":
+                        moves.append(m)
+                    else:
+                        if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
+                            moves.append(m)
+                            break
+            for i in range(1, 8):
+                m = (pos[0] - i, pos[1])
+                if board.get_coord_from_pos(m) != (-1, -1):
+                    if self.board[m[0]][m[1]].type == "":
+                        moves.append(m)
+                    else:
+                        if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
+                            moves.append(m)
+                            break
+            for i in range(1, 8):
+                m = (pos[0], pos[1] - i)
+                if board.get_coord_from_pos(m) != (-1, -1):
+                    if self.board[m[0]][m[1]].type == "":
+                        moves.append(m)
+                    else:
+                        if (not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b'):
+                            moves.append(m)
+                            break
 
         return moves

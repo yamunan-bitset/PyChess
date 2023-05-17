@@ -18,7 +18,7 @@ class Legal:
         moves = []
         if self.board[pos[0]][pos[1]] == None:
             return moves
-        print(self.board[pos[0]][pos[1]].type)
+        #print(self.board[pos[0]][pos[1]].type)
         if self.board[pos[0]][pos[1]].type[2:] == "pawn":
             if self.board[pos[0]][pos[1] + 1 if not self.white_turn else pos[1] - 1].type[:1] == "":
                 moves.append((pos[0], pos[1] + 1 if not self.white_turn else pos[1] - 1))

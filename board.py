@@ -3,6 +3,8 @@ import pieces
 import legal
 
 def get_pos_from_coord(coord):
+    x = -1
+    y = -1
     if 50 <= coord[0] < 150: x = 0
     if 150 <= coord[0] < 250: x = 1
     if 250 <= coord[0] < 350: x = 2

@@ -1,12 +1,16 @@
 import board
 
+
 class Legal:
     def __init__(self, board, turn):
         self.board = board
         print(turn)
-        if turn == 'w': self.white_turn = True
-        elif turn == 'b': self.white_turn = False
-
+        if turn == 'w':
+            self.white_turn = True
+        elif turn == 'b':
+            self.white_turn = False
+        self.history = []
+        self.tmp = []
 
     def print_board(self):
         print()
@@ -18,11 +22,13 @@ class Legal:
 
     def legal(self, pos):
         moves = []
+        special = None
+
         if self.board[pos[0]][pos[1]] == None:
             return moves
 
         if self.board[pos[0]][pos[1]].type[2:] == "pawn":
-            moves = self.pawn_moves(pos)
+            moves, special = self.pawn_moves(pos)
 
         if self.board[pos[0]][pos[1]].type[2:] == "rook":
             moves = self.linear_sliding(pos)
@@ -42,11 +48,12 @@ class Legal:
         if self.board[pos[0]][pos[1]].type[2:] == "king":
             moves = self.king_moves(pos)
 
-        return moves
-
+        return moves, special
 
     def pawn_moves(self, pos):
         moves = []
+        special = None
+
         if self.board[pos[0]][pos[1] + 1 if not self.white_turn else pos[1] - 1].type[:1] == "":
             moves.append((pos[0], pos[1] + 1 if not self.white_turn else pos[1] - 1))
         if self.white_turn:
@@ -78,7 +85,19 @@ class Legal:
                     moves.append((pos[0] - 1, pos[1] + 1))
             except IndexError:
                 pass
-        return moves
+
+        if (self.board[pos[0]][pos[1]].type[:1] == 'w' and pos[1] == 3) or (self.board[pos[0]][pos[1]].type[:1] == 'b' and pos[1] == 4):
+            if self.board[self.history[-1][0]][self.history[-1][1]].type[2:] == "pawn":
+                if (self.white_turn and self.board[self.history[-1][0]][self.history[-1][1]].type[:1] == 'b') or \
+                        (not self.white_turn and self.board[self.history[-1][0]][self.history[-1][1]].type[:1] == 'w'):
+                    if self.board[self.history[-1][0]][self.history[-1][1]].pos == (pos[0] - 1, pos[1]):
+                        moves.append((pos[0] - 1, pos[1] - 1 if self.white_turn else pos[1] + 1))
+                        special = f"entepassante {len(moves) - 1} {pos[0] - 1} {pos[1]}"
+                    elif self.board[self.history[-1][0]][self.history[-1][1]].pos == (pos[0] + 1, pos[1]):
+                        moves.append((pos[0] + 1, pos[1] - 1 if self.white_turn else pos[1] + 1))
+                        special = f"entepassante {len(moves) - 1} {pos[0] + 1} {pos[1]}"
+
+        return moves, special
 
     def linear_sliding(self, pos):
         moves = []

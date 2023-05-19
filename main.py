@@ -3,11 +3,11 @@ import pieces
 from board import *
 
 pygame.init()
-(w, h) = (900, 900)
+(w, h) = (1000, 900)
 screen = pygame.display.set_mode((w, h))
 pygame.display.set_caption("Chess")
 
-start_fen = "8/p3k3/1p1p2p1/4n2p/8/1KP2BPP/5P2/8 w - - 0 1"
+start_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 board, turn = InitPieces(screen, start_fen)
 analysis = legal.Legal(board, turn)
 
@@ -38,8 +38,15 @@ while running:
     if event.type == pygame.MOUSEBUTTONUP:
         if drag[0] >= 0:
             if analysis.legal(select_pos1) != []:
-                for pos in analysis.legal(select_pos1):
+                for pos in analysis.legal(select_pos1)[0]:
                     if pos == get_pos_from_coord(mouse):
+                        if analysis.legal(select_pos1)[1] != None:
+                            key = analysis.legal(select_pos1)[1].split()
+                            if key[0] == "entepassante":
+                                if pos == analysis.legal(select_pos1)[0][int(key[1])]:
+                                    print("entepassante")
+                                    analysis.board[int(key[2])][int(key[3])].type = ""
+                        analysis.history.append(pos)
                         p = analysis.board[select_pos1[0]][select_pos1[1]]
                         analysis.board[select_pos1[0]][select_pos1[1]] = pieces.Piece(screen, "", select_pos1)
                         select_pos2 = get_pos_from_coord(mouse)
@@ -70,12 +77,12 @@ while running:
 
     if drag[0] >= 0:
         moves = analysis.legal(drag)
-        for move in moves:
+        for move in moves[0]:
             s = pygame.Surface((100, 100))
             s.set_alpha(128)
             s.fill((255, 0, 0))
             screen.blit(s, get_coord_from_pos(move))
-        board[drag[0]][drag[1]].coord = mouse - (50, 50)
+        board[drag[0]][drag[1]].coord = mouse - BOARD_POS
         if get_pos_from_coord(mouse)[0] != -1 and get_pos_from_coord(mouse)[1] != -1:
             pygame.draw.rect(screen, (255, 255, 255, 50), (get_coord_from_pos(get_pos_from_coord(mouse))[0], get_coord_from_pos(get_pos_from_coord(mouse))[1], 100, 100), 5)
 

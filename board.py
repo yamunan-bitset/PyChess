@@ -41,9 +41,9 @@ def Board(screen):
     for i in range(length):
         for j in range(length):
             if cnt % 2 == 0:
-                pygame.draw.rect(screen, (245, 220, 190), [size * j + BOARD_POS[0], size * i + BOARD_POS[1], size, size])
+                pygame.draw.rect(screen, (241, 217, 192), [size * j + BOARD_POS[0], size * i + BOARD_POS[1], size, size])
             else:
-                pygame.draw.rect(screen, (154, 87, 26), [size * j + BOARD_POS[0], size * i + BOARD_POS[1], size, size])
+                pygame.draw.rect(screen, (169, 122, 101), [size * j + BOARD_POS[0], size * i + BOARD_POS[1], size, size])
             cnt += 1
         cnt -= 1
     pygame.draw.rect(screen, (120, 0, 0), [25, 25, length * size + BOARD_POS[0], length * size + BOARD_POS[0]], 20)

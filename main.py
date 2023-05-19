@@ -12,7 +12,7 @@ board, turn = InitPieces(screen, start_fen)
 analysis = legal.Legal(board, turn)
 
 running = True
-drag = (-1, -1)
+drag = (-2, -2)
 select_pos1 = (-1, -1)
 select_pos2 = (-1, -1)
 found = False
@@ -64,19 +64,14 @@ while running:
                         p.pos = select_pos2
                         p.coord = get_coord_from_pos(select_pos2)
                         analysis.board[select_pos2[0]][select_pos2[1]] = p
-                        drag = (-1, -1)
+                        drag = (-2, -2)
                         analysis.white_turn = not analysis.white_turn
                         print(select_pos2)
                         found = True
                         break
-                if not found:
-                    analysis.board[select_pos1[0]][select_pos1[1]].pos = select_pos1
-                    analysis.board[select_pos1[0]][select_pos1[1]].coord = get_coord_from_pos(select_pos1)
-                    drag = (-1, -1)
-            else:
                 analysis.board[select_pos1[0]][select_pos1[1]].pos = select_pos1
                 analysis.board[select_pos1[0]][select_pos1[1]].coord = get_coord_from_pos(select_pos1)
-                drag = (-1, -1)
+                drag = (-2, -2)
 
     screen.fill((0, 0, 0))
     Board(screen)

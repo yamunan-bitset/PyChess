@@ -42,10 +42,21 @@ while running:
                     if pos == get_pos_from_coord(mouse):
                         if analysis.legal(select_pos1)[1] != None:
                             key = analysis.legal(select_pos1)[1].split()
-                            if key[0] == "entepassante":
-                                if pos == analysis.legal(select_pos1)[0][int(key[1])]:
+                            if pos == analysis.legal(select_pos1)[0][int(key[1])]:
+                                if key[0] == "entepassante":
                                     print("entepassante")
                                     analysis.board[int(key[2])][int(key[3])].type = ""
+                                elif key[0] == "castle":
+                                    if key[2] == 'k':
+                                        if analysis.board[7][7 if analysis.white_turn else 0].type[2:] == "rook":
+                                            col = "w_" if analysis.white_turn else "b_"
+                                            analysis.board[5][7 if analysis.white_turn else 0].type = col + "rook"
+                                            analysis.board[7][7 if analysis.white_turn else 0].type = ""
+                                    elif key[2] == 'q':
+                                        if analysis.board[0][7 if analysis.white_turn else 0].type[2:] == "rook":
+                                            col = "w_" if analysis.white_turn else "b_"
+                                            analysis.board[3][7 if analysis.white_turn else 0].type = col + "rook"
+                                            analysis.board[0][7 if analysis.white_turn else 0].type = ""
                         analysis.history.append(pos)
                         p = analysis.board[select_pos1[0]][select_pos1[1]]
                         analysis.board[select_pos1[0]][select_pos1[1]] = pieces.Piece(screen, "", select_pos1)

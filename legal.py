@@ -46,7 +46,7 @@ class Legal:
             moves = self.knight_moves(pos)
 
         if self.board[pos[0]][pos[1]].type[2:] == "king":
-            moves = self.king_moves(pos)
+            moves, special = self.king_moves(pos)
 
         return moves, special
 
@@ -249,6 +249,7 @@ class Legal:
 
     def king_moves(self, pos):
         moves = []
+        special = None
         m = (pos[0] + 1, pos[1])
         if not (m[0] > 7 or m[1] > 7 or m[0] < 0 or m[1] < 0):
             if not ((self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
@@ -289,4 +290,16 @@ class Legal:
             if not ((self.white_turn and self.board[m[0]][m[1]].type[:1] == 'w') or (
                     not self.white_turn and self.board[m[0]][m[1]].type[:1] == 'b')):
                 moves.append(m)
-        return moves
+
+        m = (pos[0] + 2, pos[1])
+        if not (m[0] > 7 or m[1] > 7 or m[0] < 0 or m[1] < 0):
+            if self.board[pos[0] + 1][pos[1]].type == "" and self.board[pos[0] + 2][pos[1]].type == "":
+                moves.append(m)
+                special = f"castle {len(moves) - 1} k"
+        m = (pos[0] - 2, pos[1])
+        if not (m[0] > 7 or m[1] > 7 or m[0] < 0 or m[1] < 0):
+            if self.board[pos[0] - 1][pos[1]].type == "" and self.board[pos[0] - 2][pos[1]].type == "" and self.board[pos[0] - 3][pos[1]].type == "":
+                moves.append(m)
+                special = f"castle {len(moves) - 1} q"
+
+        return moves, special

@@ -22,4 +22,7 @@ class Piece:
                     self.type = self.type[:2] + "queen"
                     self.image = self.get_image_from_type()
             if not self.captured:
-                self.screen.blit(self.image, self.coord)
+                    try:
+                        self.screen.blit(self.image, self.coord)
+                    except:
+                        self.image = self.get_image_from_type()

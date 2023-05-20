@@ -1,6 +1,5 @@
 import board
 
-
 class Legal:
     def __init__(self, board, turn):
         self.board = board
@@ -10,15 +9,6 @@ class Legal:
         elif turn == 'b':
             self.white_turn = False
         self.history = []
-        self.tmp = []
-
-    def print_board(self):
-        print()
-        for i in range(64):
-            if i % 8 == 7:
-                print(str(self.board[i]) + ' ')
-            else:
-                print(self.board[i], end=" ")
 
     def legal(self, pos):
         moves = []

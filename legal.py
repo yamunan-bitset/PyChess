@@ -9,6 +9,10 @@ class Legal:
         elif turn == 'b':
             self.white_turn = False
         self.history = []
+        self.check = [False, (-2, -2)]
+        self.k_rook_moved = [False, False]
+        self.q_rook_moved = [False, False]
+        self.castled = [False, False]
 
     def legal(self, pos):
         moves = []
@@ -283,19 +287,21 @@ class Legal:
 
         m = (pos[0] + 2, pos[1])
         if not (m[0] > 7 or m[1] > 7 or m[0] < 0 or m[1] < 0):
-            try:
-                if self.board[pos[0] + 1][pos[1]].type == "" and self.board[pos[0] + 2][pos[1]].type == "":
-                    if self.board[pos[0] + 3][pos[1]].type[2:] == "rook":
-                        moves.append(m)
-                        special = f"castle {len(moves) - 1} k"
-            except: pass
+            if not self.k_rook_moved[0 if self.white_turn else 1] and not self.castled[0 if self.white_turn else 1]:
+                try:
+                    if self.board[pos[0] + 1][pos[1]].type == "" and self.board[pos[0] + 2][pos[1]].type == "":
+                        if self.board[pos[0] + 3][pos[1]].type[2:] == "rook":
+                            moves.append(m)
+                            special = f"castle {len(moves) - 1} k"
+                except: pass
         m = (pos[0] - 2, pos[1])
         if not (m[0] > 7 or m[1] > 7 or m[0] < 0 or m[1] < 0):
-            try:
-                if self.board[pos[0] - 1][pos[1]].type == "" and self.board[pos[0] - 2][pos[1]].type == "" and self.board[pos[0] - 3][pos[1]].type == "":
-                    if self.board[pos[0] - 4][pos[1]].type[2:] == "rook":
-                        moves.append(m)
-                        special = f"castle {len(moves) - 1} q"
-            except: pass
+            if not self.q_rook_moved[0 if self.white_turn else 1] and not self.castled[0 if self.white_turn else 1]:
+                try:
+                    if self.board[pos[0] - 1][pos[1]].type == "" and self.board[pos[0] - 2][pos[1]].type == "" and self.board[pos[0] - 3][pos[1]].type == "":
+                        if self.board[pos[0] - 4][pos[1]].type[2:] == "rook":
+                            moves.append(m)
+                            special = f"castle {len(moves) - 1} q"
+                except: pass
 
         return moves, special
